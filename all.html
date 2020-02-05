@@ -1,0 +1,424 @@
+<!--FILIPE SITE - OFFICIAL - DO NOT CHANGE ANY OF THIS CODE! -->
+
+<!--WEBSITE LOCATED @ FILIPE.FUN -->
+<!--Development: https://colem.dev-->
+<!--sponsered by www.cci.services (Free services, products, and games!)-->
+<!DOCTYPE HTML>
+<html>
+  <head>
+<link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+<title>Filipe.Fun - Official Website of The Filipe Community</title>
+    </head>
+<nav class="navbar navbar-expand-lg navbar-dark bg-primary fixed-top">
+    <span><a class="navbar-brand" href="https://filipe.fun"><img src="https://cdn.filipe.fun/base.png" style="width:50px;"> Filipe.Fun</a></span>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarColor02" aria-controls="navbarColor02" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse" id="navbarColor02">
+      <ul class="navbar-nav mr-auto">
+
+        <li class="nav-item">
+          <a class="nav-link" href="https://filipe.fun/all">Image Gallery</a> 
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="https://filipe.fun/community"> · Community Center</a>
+        </li>
+<li class="nav-item">
+          <a class="nav-link" href="https://filipe.fun/cards"> · Filipe Cards <span class="badge badge-success">NEW!</span></a> 
+        </li>
+        <li class="nav-item">
+          <a class="nav-link disabled" href="https://filipe.fun/generator"> · Filipe Generator <span class="badge badge-info">Coming Soon</span></a>
+        </li>
+      </ul>
+     
+    </div>
+  </nav>
+
+   <br>
+  <br>
+
+
+
+
+
+<script id="movie" type="text/x-handlebars-template">
+  <article class="movie">
+    <img class="movie-image" src="{{image}}" />
+    <div class="movie-meta">
+      <div class="movie-title">
+        {{{_highlightResult.title.value}}}
+        <br><span class="movie-year">
+          Created By: {{author}}
+        </span>
+        
+      </div>
+
+      <div>
+      Tags: 
+        {{#genre}}
+          <div class="badge badge-info">
+            {{.}}
+          </div>
+        {{/genre}}
+      </div>
+    </div>
+    
+  </article>
+</script>
+
+    <div class="input-container">
+      <input style="font-size: 20px;" class="form-control mr-sm-2" type="text" id="search-box" />
+      <div id="stats"></div>
+    </div>
+  </div>
+  
+  <div class="content">
+    <div class="facets card list-group list-group-flush">
+      <div class="facet card list-group list-group-flush">
+        <div class="facet-title" style="font-size: 20px;">Search By Tag</div>
+        <div id="tags"></div>
+      </div>
+      <div class="facet">
+        <div class="facet-title" style="font-size: 20px;">Search By Creator</div>
+        <div id="creator"></div>
+      </div>
+
+    </div>
+
+    <div class="">
+      <div id="hits"><div class="spinner-border text-primary" role="status">
+  <span class="sr-only"></span>
+        </div style="font-size: 20px;">Loading, please wait...</div>
+      
+      <div id="pagination"></div>
+    </div>
+  </div>
+</div>
+<footer id="sticky-footer" class="py-4 bg-dark text-white-50">
+    <div class="container text-center">
+      <small>Copyright &copy; 2020 <a href="https://filipe.fun/community">The Filipe Community.</a> All Rights Reserved. <br>Website development by <a href="https://colem.dev">colem.dev</a>. Site sponsored and brought to you by <a href="https://www.cci.services">CCI.Services </a>- We make services, products and games to simplify technology.</small>
+    </div>
+  </footer>
+<style>
+    * {
+  box-sizing: border-box;
+}
+body {
+  font-family: arial, sans-serif;
+  margin: 0;
+  padding: 20px;
+}
+.container {
+  display: flex;
+  flex-direction: column;
+}
+.top {
+  position: relative;
+  display: flex;
+}
+.input-container {
+  position: relative;
+  flex: 1;
+}
+.search-button {
+  align-self: stretch;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.4em;
+  font-size: 1.6em;
+  background-color: #0082f3;
+  color: white;
+  cursor: pointer;
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  box-shadow: inset 0 -6px 12px -8px rgba(0, 0, 0, 0.2), inset 0 6px 12px -8px rgba(255, 255, 255, 0.2);
+}
+.search-button:hover {
+  background-color: #0d8eff;
+}
+.search-button:active {
+  background-color: #0066c0;
+  box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.2);
+}
+#search-box {
+  width: 100%;
+  font-size: inherit;
+  padding: 0.8em 1em;
+  font-size: 1.2em;
+}
+#stats {
+  z-index: 1;
+  position: absolute;
+  bottom: 0.6em;
+  right: 0.6em;
+  font-size: 0.8em;
+  color: rgba(0, 0, 0, 0.4);
+}
+.content {
+  display: flex;
+  margin-top: 1rem;
+  border: 1px solid rgba(0, 0, 0, 0.3);
+}
+.canvas {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  padding: 10px;
+  background-color: rgba(0, 0, 0, 0.1);
+  box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+#hits {
+  flex: 1;
+}
+.ais-hits {
+  display: flex;
+  flex-wrap: wrap;
+}
+.ais-hits__empty {
+  height: 100%;
+  justify-content: center;
+  align-items: center;
+  font-size: 1.6em;
+  color: rgba(0, 0, 0, 0.4);
+}
+.ais-hits--item {
+  flex: 1 0 25%;
+  min-width: 380px;
+  border: 1px solid rgba(0, 123, 255);
+}
+.movie {
+  position: relative;
+  display: flex;
+  margin: 10px;
+  padding: 0.2em;
+}
+.movie-image {
+  flex-shrink: 0;
+  height: 231px;
+  width: 154px;
+  background-color: rgba(0, 0, 0, 0.1);
+}
+.movie-meta {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-left: 1em;
+}
+.movie-title {
+  align-items: center;
+  font-size: 1.1em;
+  font-weight: bold;
+}
+.movie-title em {
+  color: #0096e6;
+  background: rgba(0, 160, 220, 0.2);
+}
+.movie-year {
+  font-size: 0.8em;
+  font-weight: normal;
+  color: rgba(0, 0, 0, 0.6);
+}
+.movie-rating {
+  margin-top: 0.2em;
+}
+.movie-genres {
+  display: flex;
+  flex-wrap: wrap;
+  font-size: 0.8em;
+  margin-top: 0.7em;
+  margin-right: -0.4em;
+  margin-bottom: -0.4em;
+}
+.movie-genre {
+  color: rgba(0, 0, 0, 0.7);
+  padding: 0.4em 0.6em;
+  background-color: rgba(0, 0, 0, 0.1);
+  margin-right: 0.4em;
+  margin-bottom: 0.4em;
+}
+ul.ais-pagination {
+  padding: 0;
+  margin: 0;
+}
+#pagination {
+  margin: 10px 0;
+  text-align: center;
+}
+.ais-pagination--item {
+  margin: 0 0.2em;
+}
+.ais-pagination--link {
+  font-size: 1.2em;
+  text-decoration: none;
+  color: rgba(0, 0, 0, 0.4);
+}
+.ais-pagination--item__active .ais-pagination--link {
+  font-weight: bold;
+  color: rgba(0, 100, 220, 0.6);
+}
+.facets {
+  width: 20%;
+  min-width: 270px;
+}
+.facet {
+  padding: 1em 0;
+}
+.facet-title {
+  padding: 0 1em;
+  font-size: 1.1em;
+  margin-bottom: 0.6em;
+}
+.ais-refinement-list--item {
+  padding: 0 1em;
+  cursor: pointer;
+  color: rgba(0, 0, 0, 0.7);
+}
+.ais-refinement-list--item:hover {
+  color: black;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+.ais-refinement-list--item.ais-refinement-list--item__active {
+  background-color: rgba(0, 0, 0, 0.08);
+  font-weight: bold;
+  color: black;
+}
+.ais-refinement-list--label {
+  position: relative;
+  display: flex;
+  line-height: 1.4em;
+  cursor: inherit;
+}
+.ais-refinement-list--label input[type=checkbox] {
+  display: none;
+}
+.ais-refinement-list--count, .ais-star-rating--count {
+  top: 0;
+  position: absolute;
+  right: 0;
+  font-size: 0.8em;
+  color: rgba(0, 0, 0, 0.4);
+}
+.ais-star-rating--item {
+  padding: 0 1em;
+  cursor: pointer;
+  color: rgba(0, 0, 0, 0.7);
+}
+.ais-star-rating--item:hover {
+  color: black;
+  background-color: rgba(0, 0, 0, 0.04);
+}
+.ais-star-rating--item.ais-star-rating--item__active {
+  background-color: rgba(0, 0, 0, 0.08);
+  font-weight: bold;
+  color: black;
+}
+.ais-star-rating--link {
+  position: relative;
+  display: block;
+  text-decoration: none;
+  line-height: 1.4em;
+  color: inherit;
+}
+.ais-range-slider--tooltip {
+  position: relative;
+  background: none;
+}
+.ais-range-slider--handle {
+  display: flex;
+  justify-content: center;
+}
+#year {
+  padding: 0 2em;
+}
+
+    </style>
+<script src="https://filipe.fun/algolia-instantsearch-file.js"></script>
+<script>
+var search = instantsearch({
+  appId: 'latency',
+  apiKey: '6be0576ff61c053d5f9a3225e2a90f76',
+  indexName: 'movies'
+});
+search.addWidget(instantsearch.widgets.searchBox({
+  container: '#search-box',
+  placeholder: 'Search by Filipe Name, Creator or Tag...',
+  autofocus: false
+}));
+search.addWidget(instantsearch.widgets.stats({
+  container: '#stats'
+}));
+var hitTemplate = document.getElementById('movie').innerHTML;
+search.addWidget(instantsearch.widgets.hits({
+  container: '#hits',
+  hitsPerPage: 12,
+  templates: {
+    item: hitTemplate
+  },
+  transformData: function transformData(hit) {
+    hit.stars = [];
+
+    for (var i = 1; i <= 5; ++i) {
+      hit.stars.push(i <= hit.rating);
+    }
+
+    return hit;
+  }
+}));
+search.addWidget(instantsearch.widgets.pagination({
+  container: '#pagination'
+}));
+search.addWidget(instantsearch.widgets.refinementList({
+  container: '#tags',
+  attributeName: 'genre',
+  operator: 'and',
+  limit: 10
+}));
+    search.addWidget(instantsearch.widgets.pagination({
+  container: '#pagination'
+}));
+search.addWidget(instantsearch.widgets.refinementList({
+  container: '#creator',
+  attributeName: 'author',
+  operator: 'and',
+  limit: 10
+}));
+
+search.start();
+</script>
+  <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js" integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n" crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+<link rel="stylesheet" type="text/css" href="https://cdn.jsdelivr.net/instantsearch.js/1/instantsearch.min.css">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.css">
+<script type="text/javascript">
+wpac_init = window.wpac_init || [];
+wpac_init.push({widget: 'Rating', id: 19019});
+(function() {
+    if ('WIDGETPACK_LOADED' in window) return;
+    WIDGETPACK_LOADED = true;
+    var mc = document.createElement('script');
+    mc.type = 'text/javascript';
+    mc.async = true;
+    mc.src = 'https://embed.widgetpack.com/widget.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(mc, s.nextSibling);
+})();
+</script>
+<script type="text/javascript">
+          function wpac_ajax_init() {
+              WPac.init({widget: 'Rating', id: 12345, el: 'wpac-rating-ajax'});
+          }
+          </script>
+<script>
+  window.announcekit = (window.announcekit || { queue: [], on: function(n, x) { window.announcekit.queue.push([n, x]); }, push: function(x) { window.announcekit.queue.push(x); } });
+  window.announcekit.push({
+    "widget": "https://announcekit.app/widget/2exCIE",
+    "selector": ".announcekit-widget",
+    "embed": true,
+    "version": 2
+  })
+</script>
+<script async src="https://cdn.announcekit.app/widget.js"></script>
+</html>
